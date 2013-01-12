@@ -1,0 +1,380 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Расходы</title>
+        <style>
+            label { width: 180px; display: inline-block; }
+        </style>
+    </head>
+
+    <body>
+        <h1>Расчёт потребности города в ресурсе</h1>
+        <label for="items">Продукт </label>
+        <select name="items" id="items" onclick="selectItem();">
+            <option value="fish">Рыба / Fish / Fisch</option>
+            <option value="bread">Хлеб / Bread / Breed</option>
+            <option value="spices">Специи / Spices</option>
+            <option value="meat">Мясо / Meat</option>
+            <option value="goatmilk">Козье молоко / Goat Milk / Milch</option>
+            <option value="cider">Сидр / Cider</option>
+            <option value="beer">Пиво / Beer</option>
+            <option value="wine">Вино / Wine</option>
+            <option value="woolgarments">Шерстяная одежда / Wool Garments</option>
+            <option value="linengarments">Linen Garments</option>
+            <option value="leatherjerkins">Leather Jerkins</option>
+            <option value="furcoats">Fur Coats</option>
+            <option value="brocaderobes">Brocade Robes</option>
+            <option value="books">Книги / Books</option>
+            <option value="candlesticks">Candlesticks</option>
+            <option value="glasses">Glasses</option>
+        </select>
+        <br>
+        <label for="peasants">Пионеры / Pioneers: </label><input type="text" name="peasants" id="peasants" value="0" onkeypress="selectItem();" onkeyup="selectItem();"/>
+        <br>
+        <label for="citizens">Ремесленники / Vassals: </label><input type="text" name="citizens" id="citizens" value="0" onkeypress="selectItem();" onkeyup="selectItem();"/>
+        <br>
+        <label for="patricians">Купцы / Merchants: </label><input type="text" name="patricians" id="patricians" value="0" onkeypress="selectItem();" onkeyup="selectItem();"/>
+        <br>
+        <label for="noblemans">Дворяне / Imperials: </label><input type="text" name="noblemans" id="noblemans" value="0" onkeypress="selectItem();" onkeyup="selectItem();"/>
+        <br>
+        <!--label for="imperials">Imperials: </label><input type="hidden" name="imperials" id="imperials" value="0" onkeypress="selectItem();" onkeyup="selectItem();"/>
+        <br-->
+
+        <br>
+        <label for="time">Время в минутах: </label><input type="text" name="time" id="time" value="60" onkeypress="selectItem();" onkeyup="selectItem();"/>
+
+        <div><p>Расход продукта за <span id="result_time"></span>: <span id="result_amount">0 единиц</span></p></div>
+        <div id="result_chain"></div>
+
+        <script type="text/javascript">
+            document.getElementById( 'result_time' ).innerHTML = document.getElementById( 'time' ).value + ' минут';
+
+            var result_amount = 0;
+            var chain         = [];
+            var production    = [];
+            var resultChain   = [];
+
+            var items = [
+                [['fish',           [['peasants', 0.0007735], ['citizens', 0.0004300], ['patricians', 0.0002650], ['noblemans', 0.0001725], ['imperials', -0.001]]]],
+                [['bread',          [['peasants', 0],         ['citizens', 0.000375],  ['patricians', 0.00023],   ['noblemans', 0.0001500], ['imperials', 0]]]],
+                [['spices',         [['peasants', 0],         ['citizens', 0],         ['patricians', 0.0002],    ['noblemans', 0.00005],   ['imperials', 0]]]],
+                [['meat',           [['peasants', 0],         ['citizens', 0],         ['patricians', 0],         ['noblemans', 0.00009],   ['imperials', 0]]]],
+                [['goatmilk',       [['peasants', 0.0013],    ['citizens', 0.000735],  ['patricians', 0.000455],  ['noblemans', 0.00029],   ['imperials', 0]]]],
+                [['cider',          [['peasants', 0],         ['citizens', 0.00033],   ['patricians', 0.00021],   ['noblemans', 0.000135],  ['imperials', -0.001]]]],
+                [['beer',           [['peasants', 0],         ['citizens', 0],         ['patricians', 0.00016],   ['noblemans', 0.000105],  ['imperials', 0]]]],
+                [['wine',           [['peasants', 0],         ['citizens', 0],         ['patricians', 0],         ['noblemans', 0.00005],   ['imperials', 0]]]],
+                [['woolgarments',   [['peasants', 0.00062],   ['citizens', 0.00033],   ['patricians', 0.00018],   ['noblemans', 0.000104],  ['imperials', 0]]]],
+                [['linengarments',  [['peasants', 0],         ['citizens', 0.000225],  ['patricians', 0.00014],   ['noblemans', 0.0000925], ['imperials', -0.001]]]],
+                [['leatherjerkins', [['peasants', 0],         ['citizens', 0],         ['patricians', 0.00005],   ['noblemans', 0.0000335], ['imperials', 0]]]],
+                [['furcoats',       [['peasants', 0],         ['citizens', 0],         ['patricians', 0.00005],   ['noblemans', 0.000035],  ['imperials', 0]]]],
+                [['brocaderobes',   [['peasants', 0],         ['citizens', 0],         ['patricians', 0],         ['noblemans', 0.00002],   ['imperials', 0]]]],
+                [['books',          [['peasants', 0],         ['citizens', 0],         ['patricians', 0.00016],   ['noblemans', 0.000105],  ['imperials', 0]]]],
+                [['candlesticks',   [['peasants', 0],         ['citizens', 0],         ['patricians', 0],         ['noblemans', 0.0000425], ['imperials', 0]]]],
+                [['glasses',        [['peasants', 0],         ['citizens', 0],         ['patricians', 0],         ['noblemans', 0.00002],   ['imperials', 0]]]]
+            ];
+
+            var durations = [
+                ['tools',           420],
+                ['glass',           630],
+                ['potash',          420],
+                // food
+                ['fish',             90],
+                ['meat',            630],
+                ['wheat',           440],
+                ['flour',           220],
+                ['bread',           220],
+                ['cattle',          840],
+                ['salt',            210],
+                ['brine',           140],
+                // drinks
+                ['goatmilk',        165],
+                ['apples',          380],
+                ['cider',           190],
+                ['beer',            330],
+                ['herbs',           660],
+                ['wine',           1260],
+                ['grapes',         2205],
+                ['barrel',          945],
+                // clothing
+                ['wool',            200],
+                ['woolgarments',    200],
+                ['hemp',            630],
+                ['linengarments',   210],
+                ['ironore',         105],
+                ['iron',            315],
+                ['coal',            105],
+                ['charcoal',        210],
+                ['leatherjerkins',  420],
+                ['animalhides',     840],
+                ['furs',            300],
+                ['furcoats',        600],
+                ['brocaderobes',   3150],
+                ['goldore',        1260],
+                ['gold',           1050],
+                // property
+                ['books',           630],
+                ['paper',           210],
+                ['candlesticks',    840],
+                ['candles',        1260],
+                ['beeswax',         840],
+                ['copper',          280],
+                ['brass',           420],
+                ['glasses',        1260],
+                ['quartz',          630],
+                ['wood',            105]
+            ];
+
+            var chains = [
+                ['tools',          ['iron', 'coal']],
+                ['glass',          ['potash', 'quartz']],
+                ['potash',         ['wood']],
+                // food
+                ['fish',           []],
+                ['meat',           ['cattle', 'salt']],
+                ['wheat',          []],
+                ['flour',          ['wheat']],
+                ['bread',          ['flour']],
+                ['cattle',         []],
+                ['salt',           ['brine', 'coal']],
+                ['brine',          []],
+                // drinks
+                ['goatmilk',       []],
+                ['apples',         []],
+                ['cider',          ['apples']],
+                ['beer',           ['herbs', 'wheat']],
+                ['herbs',          []],
+                ['wine',           ['grapes', 'barrels']],
+                ['grapes',         []],
+                ['barrel',         ['wood', 'iron']],
+                // clothing
+                ['wool',           []],
+                ['woolgarments',   ['wool']],
+                ['hemp',           []],
+                ['linengarments',  ['hemp']],
+                ['ironore',        []],
+                ['iron',           ['ironore','coal']],
+                ['coal',           []],
+                ['charcoal',       ['wood']],
+                ['leatherjerkins', ['animalhides', 'salt']],
+                ['animalhides',    []],
+                ['furs',           []],
+                ['furcoats',       ['furs']],
+                ['brocaderobes',   ['silk', 'gold']],
+                ['goldore',        []],
+                ['gold',           ['goldore','coal']],
+                // property
+                ['books',          ['paper','indigo']],
+                ['paper',          ['wood']],
+                ['candlesticks',   ['candles', 'brass']],
+                ['candles',        ['beeswax','hemp']],
+                ['beeswax',        []],
+                ['copper',         []],
+                ['brass',          ['copper', 'coal']],
+                ['glasses',        ['quartz', 'brass']],
+                ['quartz',         []],
+                ['wood',           []]
+            ];
+
+            var buildings = [
+                ['tools',          "Toolmaker's Workshop"],
+                ['glass',          "Glass Smelter"],
+                ['potash',         "Forest Glassworks"],
+                // food
+                ['fish',           "Fisherman's Hut"],
+                ['meat',           "Butchery"],
+                ['wheat',          "Wheat Farm"],
+                ['flour',          "Mill"],
+                ['bread',          "Bakery"],
+                ['cattle',         "Cattle Farm"],
+                ['salt',           "Salt Works"],
+                ['brine',          "Salt Mine"],
+                ['spices',         "Spice Farm"],
+                // drinks
+                ['goatmilk',       "Goat Farm"],
+                ['apples',         "Cider Farm"],
+                ['cider',          "Apple Press"],
+                ['beer',           "Monastery Brewery"],
+                ['herbs',          "Monastery Garden"],
+                ['wine',           "Winepress"],
+                ['grapes',         "Vineyard"],
+                ['barrel',         "Barrel Cooperage"],
+                // clothing
+                ['wool',           "Sheep Farm"],
+                ['woolgarments',   "Spinner's Hut"],
+                ['hemp',           "Hemp Plantation"],
+                ['linengarments',  "Weaver's Hut"],
+                ['ironore',        "Iron Mine"],
+                ['iron',           "Iron Ore Smelter"],
+                ['coal',           "Coal Mine"],
+                ['charcoal',       "Charcoal Burner's Hut"],
+                ['leatherjerkins', "Tannery"],
+                ['animalhides',    "Pig Farm"],
+                ['furs',           "Trapper's Lodge"],
+                ['furcoats',       "Furrier's Workshop"],
+                ['brocaderobes',   "Silk Weaving Mill"],
+                ['goldore',        "Gold Mine"],
+                ['gold',           "Gold Ore Smelter"],
+                // property
+                ['books',          "Print Press"],
+                ['paper',          "Papermill River"],
+                ['candlesticks',   "Metalworks"],
+                ['candles',        "Candlemakers Workshop Smelter"],
+                ['beeswax',        "Apiary"],
+                ['copper',         "Copper Mine"],
+                ['brass',          "Copper Ore Smelter"],
+                ['glasses',        "Opticians Workshop"],
+                ['quartz',         "Quartz Mason"],
+                ['wood',           "Lumberjack's Hut"]
+            ];
+
+            function selectItem()
+            {
+                var item = document.getElementById( 'items' ).value;
+
+                for( var i = 0; i < items.length; i++ )
+                {
+                    if( items[i][0][0] == item )
+                    { 
+                        calculateConsumptionAmount( items[i][0][1] );
+                        break;
+
+                    }
+                }
+            }
+
+            function calculateConsumptionAmount( amounts )
+            {
+                var time                  = ( document.getElementById( 'time' ) != null ) ? document.getElementById( 'time' ).value : 0;
+                var peasants              = ( document.getElementById( 'peasants' ) != null ) ? document.getElementById( 'peasants' ).value : 0;
+                var citizens              = ( document.getElementById( 'citizens' ) != null ) ? document.getElementById( 'citizens' ).value : 0;
+                var patricians            = ( document.getElementById( 'patricians' ) != null ) ? document.getElementById( 'patricians' ).value : 0;
+                var noblemans             = ( document.getElementById( 'noblemans' ) != null ) ? document.getElementById( 'noblemans' ).value : 0;
+                var imperials             = ( document.getElementById( 'imperials' ) != null ) ? document.getElementById( 'imperials' ).value : 0;
+                var gameTicks             = time * 2;
+                var consumptionPeasants   = amounts[0][1] * peasants;
+                var consumptionCitizens   = amounts[1][1] * citizens;
+                var consumptionPatricians = amounts[2][1] * patricians;
+                var consumptionNoblemans  = amounts[3][1] * noblemans;
+                var consumptionImperials  = amounts[4][1] * imperials;
+
+                var consumptionTotal      = Math.round(
+                    ( 
+                        consumptionPeasants + 
+                        consumptionCitizens + 
+                        consumptionPatricians + 
+                        consumptionNoblemans + 
+                        consumptionImperials 
+                    ) * gameTicks, 0 );
+
+                result_amount = consumptionTotal;
+
+                document.getElementById( 'result_time' ).innerHTML   = document.getElementById( 'time' ).value + ' минут';
+                document.getElementById( 'result_amount' ).innerHTML = consumptionTotal + ' единиц';
+
+                chain = [];
+                calculateProduction();
+
+            }
+
+            function calculateProduction()
+            {
+                var item = document.getElementById( 'items' ).value;
+                var time = 0;
+                
+                chain.push( item );
+                buildChain( item );
+
+                production = [];
+
+                var buildings = [];
+                for( var i = 0; i < chain.length; i++ )
+                {
+                    var current = chain[i];
+                    { 
+                        for( var j = 0; j < durations.length; j++ )
+                        {
+                            if( durations[j][0] == current )
+                            { 
+                                
+                                production.push( [current, durations[j][1], result_amount] );
+
+                            }
+                        }
+                    }
+                }
+
+                calculateBuildings();
+
+            }
+            
+            function buildChain( item )
+            {
+                for( var i = 0; i < chains.length; i++ )
+                {
+                    if( chains[i][0] == item && chains[i][1].length > 0 )
+                    { 
+                        for( var j = 0; j < chains[i][1].length; j++ )
+                        {
+                            chain.push( chains[i][1][j] );
+                            buildChain( chains[i][1][j] );
+
+                        }
+                    }
+                }
+            }
+
+
+            function calculateBuildings()
+            {
+                var totalTime = document.getElementById( 'time' ).value * 60; // min ==> sec;
+                
+                resultChain = [];
+
+                for( var i = 0; i < production.length; i++ )
+                {
+                    var productionTime      = production[i][1];
+                    var totalAmount         = production[i][2];
+                    var productionPerPeriod = totalTime / productionTime;
+                    var buildingCount      = 1;
+                    var buildingName        = '';
+
+                    if( productionPerPeriod < result_amount )
+                    {
+                        while( productionPerPeriod < result_amount )
+                        {
+                            buildingCount++;
+                            productionPerPeriod = totalTime / ( productionTime / buildingCount );
+                    
+                        }
+                    }
+
+                    for( var j = 0; j < buildings.length; j++ )
+                    {
+                        if( buildings[j][0] == production[i][0] )
+                        { 
+                            buildingName = buildings[j][1];
+                            break;
+
+                        }
+                    }
+                    
+                    resultChain.push( [buildingName, buildingCount, productionPerPeriod, production[i][0]] );
+
+                }
+
+                var result = '';
+
+                
+                for( var k = 0; k < resultChain.length; k++ )
+                {
+                    result += '<p>Городу надо ' + resultChain[k][1] + ' ' + resultChain[k][0] + ' чтобы сделать ' + Math.round( resultChain[k][2], 0 ) + ' из требуемых ' + result_amount + ' ' + resultChain[k][3] + ' за ' + ( totalTime / 60 ) + ' минут</p>';
+
+                }
+
+                document.getElementById( 'result_chain' ).innerHTML = result;
+
+            }
+        </script>
+    </body>
+</html>
+    
