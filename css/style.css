@@ -1,0 +1,88 @@
+html,
+body {
+	height: 100%;
+	
+}
+
+body {
+	background: url( /img/grey.png );
+
+}
+
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -60px;
+
+}
+
+.page-header {
+	margin: 60px 0 30px 0;
+
+}
+
+#footer {
+	height: 60px;
+	background-color: #f5f5f5;
+	background: url( /img/grid.png );
+	line-height: 50px;
+	vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+	#footer {
+		margin-left: -20px;
+		margin-right: -20px;
+		padding-left: 20px;
+		padding-right: 20px;
+
+	}
+}
+
+.navbar-inverse .navbar-inner { 
+	background: url( /img/pw_maze_black.png );
+
+}
+
+#mapWrapper {
+	width: 100%;
+	outline: 1px solid #999;
+	background: #fff;
+	z-index: 0; 
+
+}
+
+#mapLoader {
+	position: absolute;
+	z-index: 99;
+	background: #555;
+
+}
+
+#mapArea {
+	position: absolute; 
+	z-index: 0; 
+	margin: 4px;
+
+}
+
+.well {
+	padding: 10px;
+	margin-top: 60px;
+
+}
+
+#progress-wrap {
+	position: absolute;
+
+}
+
+#progress-wrap .progress-label {
+	width: 100%;
+	text-align: center;
+	padding: 10px;
+	font-size: 20px;
+	color: #f0f0f0;
+
+}

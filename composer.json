@@ -1,0 +1,36 @@
+{
+    "name": "doktorgradus/city_calc",
+    "description": "City consumptions calculator",
+    "authors": [
+        {
+            "name": "Eugene Kobyashev",
+            "email": "doktorgradus@gmail.com"
+        }
+    ],
+
+    "require": {
+        "php": ">=5.3.3",
+        "silex/silex": "1.0.*",
+        "twig/extensions": "1.0.*",
+        "leafo/lessphp": "*",
+        "twitter/bootstrap": "dev-master"        
+    },
+    "repositories": [
+    {
+        "type": "package",
+        "package": {
+            "version": "dev-master",
+            "name": "twitter/bootstrap",
+            "source": {
+                "url": "git://github.com/twitter/bootstrap.git",
+                "type": "git",
+                "reference": "v2.2.2"
+            },
+            "dist": {
+                "url":"http://twitter.github.com/bootstrap/assets/bootstrap.zip",
+                "type":"zip"
+            }
+        }
+    }],
+    "minimum-stability": "dev"
+}
