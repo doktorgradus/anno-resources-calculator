@@ -96,11 +96,11 @@ class XMLHandler
 				{
 					$good   = (string) $consumption['good'];
 					$amount = (float) $consumption['amount'];
-					$gold   = (float) $consumption->Tax['gold'];
+					$tax    = (float) $consumption->Tax['gold'];
 					array_push( $needs, array( 
 						'good' => $good, 
 						'amount' => $amount, 
-						'gold' => $gold
+						'tax' => $tax
 
 					));
 				}
@@ -121,6 +121,13 @@ class XMLHandler
 		{
 			$id      = (int) $production[0]['id'];
 			$name    = (string) $production[0]['name'];
+
+			if( strpos( strtolower( $name ), 'milk' ) !== false )
+			{
+				$name = 'GoatmilkProduction';
+
+			}
+
 			$time    = (int) $production[0]['productionTime'];
 			$output  = $this->splitGoods( (string) $production[0]['outputGood'] );
 			$input   = $this->splitGoods( (string) $production[0]['inputGood'] );

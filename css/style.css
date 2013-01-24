@@ -5,6 +5,7 @@ body {
 }
 
 body {
+	background-color: #000;
 	background: url( /img/grey.png );
 
 }
@@ -18,14 +19,14 @@ body {
 }
 
 .page-header {
-	margin: 60px 0 30px 0;
+	margin: 60px auto 30px auto;
 
 }
 
 #footer {
 	height: 60px;
 	background-color: #f5f5f5;
-	background: url( /img/grid.png );
+	background: url( /img/grid.jpg );
 	line-height: 50px;
 	vertical-align: middle;
 }
@@ -41,7 +42,7 @@ body {
 }
 
 .navbar-inverse .navbar-inner { 
-	background: url( /img/pw_maze_black.png );
+	background: url( /img/low_contrast_linen.jpg );
 
 }
 
@@ -84,5 +85,88 @@ body {
 	padding: 10px;
 	font-size: 20px;
 	color: #f0f0f0;
+
+}
+
+.navbar-inverse .nav .active > a, 
+.navbar-inverse .nav .active > a:hover, 
+.navbar-inverse .nav .active > a:focus {
+	background: url( /img/low_contrast_linen_dark.jpg );
+}
+
+.form-time .inline,
+.form-houses .inline,
+.form-inhabitants .inline {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.form-time .input-small,
+.form-houses .input-small,
+.form-inhabitants .input-small {
+	text-align: right;
+	font-size: 20px;
+	font-weight: bold;
+	height: 32px;
+	line-height: 30px;
+	width: 120px;
+
+}
+
+.table th, .table td {
+	vertical-align: baseline;
+	
+}
+
+.table img {
+	vertical-align: middle;
+	padding-right: 8px;
+
+}
+
+
+
+#time {
+	background: url( /data/icons/time.png ) no-repeat 4px 50%;
+
+}
+
+#peasants {
+	background: url( /data/icons/avatars/avatar20.png ) no-repeat 4px 50%;
+
+}
+
+#citizens {
+	background: url( /data/icons/avatars/avatar19.png ) no-repeat 4px 50%;
+
+}
+
+#patricians {
+	background: url( /data/icons/avatars/avatar18.png ) no-repeat 4px 50%;
+
+}
+
+#noblemans {
+	background: url( /data/icons/avatars/avatar17.png ) no-repeat 4px 50%;
+
+}
+
+#peasant_houses {
+	background: url( /data/icons/items/family_refugee.png ) no-repeat 4px 50%;
+
+}
+
+#citizen_houses {
+	background: url( /data/icons/items/family_citizen.png ) no-repeat 4px 50%;
+
+}
+
+#patrician_houses {
+	background: url( /data/icons/items/family_trader.png ) no-repeat 4px 50%;
+
+}
+
+#nobleman_houses {
+	background: url( /data/icons/items/family_noble.png ) no-repeat 4px 50%;
 
 }

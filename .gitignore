@@ -1,3 +1,4 @@
 data/
 vendors/
 city-calculator.*
+composer.lock

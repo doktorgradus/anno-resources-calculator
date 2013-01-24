@@ -1,0 +1,95 @@
+{% include 'header.html' %}
+<div class="page-header">
+	<h1>{{ site.page.title }}</h1>
+</div>
+
+<div class="row-fluid">
+	<div class="span6">
+		<form class="form-houses">
+			<fieldset>
+				<legend>{{ site.page.housetitle }}</legend>
+				<div class="inline">
+					<label for="peasant_houses">{{ site.page.peasants }}</label>
+					<input type="text" class="input-small" id="peasant_houses" maxlength="5" tabindex="10" autofocus value="0">
+				</div>
+				<div class="inline">
+					<label for="citizen_houses">{{ site.page.citizens }}</label>
+					<input type="text" class="input-small" id="citizen_houses" maxlength="5" tabindex="20" value="0">
+					</div>
+				<div class="inline">
+					<label for="patrician_houses">{{ site.page.patricians }}</label>
+					<input type="text" class="input-small" id="patrician_houses" maxlength="5" tabindex="30" value="0">
+					</div>
+				<div class="inline">
+					<label for="nobleman_houses">{{ site.page.noblemans }}</label>
+					<input type="text" class="input-small" id="nobleman_houses" maxlength="5" tabindex="40" value="0">
+				</div>
+			</fieldset>
+		</form>
+		<form class="form-inhabitants">
+			<fieldset>
+				<legend>{{ site.page.inhabitanttitle }}</legend>
+				<div class="inline">
+					<label for="peasants">{{ site.page.peasants }}</label>
+					<input type="text" class="input-small" id="peasants" maxlength="6" tabindex="50" value="0">
+				</div>
+				<div class="inline">
+					<label for="citizens">{{ site.page.citizens }}</label>
+					<input type="text" class="input-small" id="citizens" maxlength="6" tabindex="60" value="0">
+				</div>
+				<div class="inline">
+					<label for="patricians">{{ site.page.patricians }}</label>
+					<input type="text" class="input-small" id="patricians" maxlength="6" tabindex="70" value="0">
+				</div>
+				<div class="inline">
+					<label for="noblemans">{{ site.page.noblemans }}</label>
+					<input type="text" class="input-small" id="noblemans" maxlength="6" tabindex="80" value="0">
+				</div>
+			</fieldset>
+		</form>
+		<form class="form-time">
+			<fieldset>
+				<legend>{{ site.page.timetitle }}</legend>
+				<div class="inline">
+					<label for="time">{{ site.page.time }}</label>
+					<input type="text" class="input-small" id="time" maxlength="5" tabindex="90" value="60">
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<div class="span6" >
+		{% if false %}
+		<form class="gold">
+			<fieldset>
+				<legend>{{ site.page.goldtitle }}</legend>
+				<div id="result_gold">
+				</div>
+			</fieldset>
+		</form>
+		{% endif %}
+		<form class="consumptions">
+			<fieldset>
+				<legend>{{ site.page.consumptionstitle }}</legend>
+				<div id="result_consumptions">
+				</div>
+			</fieldset>
+		</form>
+		{% if false %}
+		<form class="buildings">
+			<fieldset>
+				<legend>{{ site.page.buildingstitle }}</legend>
+				<div id="result_buildings">
+				</div>
+			</fieldset>
+		</form>
+		<form class="chains">
+			<fieldset>
+				<legend>{{ site.page.chainstitle }}</legend>
+				<div id="result_chain">
+				</div>
+			</fieldset>
+		</form> 
+		{% endif %}
+	</div>
+</div>
+{% include 'footer.html' %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="{{ site.brand }}" />
+	<meta name="author" content="{{ site.owner }}" />
+
+	<title>{{ site.title }}</title>
+	
+	<link href="/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet" />
+	<link href="/css/style.css" rel="stylesheet" />
+	<link href="/favicon.ico" rel="shortcut icon" />
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<div id="wrap">
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
+					<a class="brand" href="/">{{ site.brand }}</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li{% if site.page.active == "homepage" %} class="active"{% endif %}><a href="{{ site.url.main }}">{{ site.menu.main }}</a></li>
+							<li class="dropdown">
+								<a href="" class="dropdown-toggle" data-toggle="dropdown">{{ site.menu.calcs }} <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+						      		<li{% if site.page.active == "citycalc" %} class="active"{% endif %}><a href="{{ site.url.citycalc }}">{{ site.menu.citycalc }}</a></li>
+						    	</ul>
+						    </li>
+							<li><a href="{{ site.url.test }}">{{ site.menu.test }}</a></li>
+						</ul>
+						<ul class="nav pull-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ site.menu.language }} <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="#">{{ site.menu.russian }}</a></li>
+									<li><a href="#">{{ site.menu.german }}</a></li>
+									<li><a href="#">{{ site.menu.english }}</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="page">
+			<div class="container">
+			

@@ -12,48 +12,122 @@ $app['debug'] = true;
 $app->register( new Silex\Provider\TwigServiceProvider());
 $app->loader = new \Twig_Loader_Filesystem( __DIR__ . '/html' );
 $app->twig   = new \Twig_Environment( $app->loader, array( 'debug' => true ));
+
 $app->get( '/', function() use ( $app ) 
 {
-    $template = $app->twig->loadTemplate( 'mainpage.html' );
+    $template = $app->twig->loadTemplate( 'homepage.html' );
 
     return $template->render( 
     	array( 
 			'site' => array( 
-				'owner' => 'doktorgradus'
-				'title' => 'City Consumptions Calculator', 
+				'owner' => 'doktorgradus',
+				'title' => 'Anno Online site', 
 				'brand' => 'Anno-Game.ru',
 				'menu' => array(
 					'main' => 'Main',
-					'calc' => 'City Consumptions Calculator',
-					'test' => 'Test'
+					'calcs' => 'Calculators',
+					'citycalc' => 'City Consumptions Calculator',
+					'language' => 'Language',
+					'russian' => 'Russian',
+					'german' => 'German',
+					'english' => 'English'
 				),
 				'url' => array(
 					'main' => '/',
-					'calc' => '/city-consumptions-calculator',
+					'citycalc' => '/city-consumptions-calculator',
 					'test' => ''
+				),
+				'page' => array(
+					'active' => 'homepage',
+					'title' => 'Anno Online Main Page'
 				)
 			)
     	)
 	);
 })->bind( 'homepage' );
 
-$app->get( '/city-consumptions-calculator', function()
+$app->get( '/city-consumptions-calculator', function() use ( $app )
 {
-	return "Main page";
-});
+	$template = $app->twig->loadTemplate( 'city-consumptions-calculator.html' );
 
-$app->get( '/404.html', function()
-{
-	$template = $app->twig->loadTemplate( '404.html' );
-
-    return $template->render( 
+	return $template->render( 
     	array( 
-    		'page' => array(
-    			'text' => 'This page was sinked in deep sea...'
+			'site' => array( 
+				'owner' => 'doktorgradus',
+				'title' => 'Anno Online site', 
+				'brand' => 'Anno-Game.ru',
+				'menu' => array(
+					'main' => 'Main',
+					'calcs' => 'Calculators',
+					'citycalc' => 'City Consumptions Calculator',
+					'language' => 'Language',
+					'russian' => 'Russian',
+					'german' => 'German',
+					'english' => 'English'
+				),
+				'url' => array(
+					'main' => '/',
+					'citycalc' => '/city-consumptions-calculator',
+					'test' => ''
+				),
+				'page' => array(
+					'active' => 'citycalc',
+					'title' => 'City Consumptions Calculator',
+					'timetitle' => 'Time',
+					'housetitle' => 'Houses',
+					'inhabitanttitle' => 'Inhabitants',
+					'consumptionstitle' => 'Consumptions',
+					'goldtitle' => 'Money',
+					'buildingstitle' => 'Buildings',
+					'time' => 'Time in minutes',
+					'peasants' => 'Peasants',
+					'citizens' => 'Vassals',
+					'patricians' => 'Merchants',
+					'noblemans' => 'Imperials'
+				)
 			)
     	)
-    );
+	);
+})->bind( 'citycalc' );
 
+$app->error( function( \Exception $e, $code ) use ( $app ) 
+{
+    if( $code == 404 ) 
+    {
+        $template = $app->twig->loadTemplate( '404.html' );
+
+	    return $template->render( 
+	    	array( 
+				'site' => array( 
+					'owner' => 'doktorgradus',
+					'title' => 'Anno Online site', 
+					'brand' => 'Anno-Game.ru',
+					'menu' => array(
+						'main' => 'Main',
+						'calcs' => 'Calculators',
+						'citycalc' => 'City Consumptions Calculator',
+						'language' => 'Language',
+						'russian' => 'Russian',
+						'german' => 'German',
+						'english' => 'English'
+					),
+					'url' => array(
+						'main' => '/',
+						'citycalc' => '/city-consumptions-calculator',
+						'test' => ''
+					),
+					'page' => array(
+						'active' => '404',
+						'title' => 'Page of 404 error',
+						'text' => 'This page was sink in deep sea'
+					)
+				)
+	    	)
+		);
+    
+    }
+
+    return new Response('We are sorry, but something went terribly wrong.', $code);
 
 });
 
